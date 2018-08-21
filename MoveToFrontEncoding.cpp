@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "MoveToFrontEncoding.h"
 
 vector<uint8_t> MoveToFrontEncoding::Encode(vector<uint8_t> input)
