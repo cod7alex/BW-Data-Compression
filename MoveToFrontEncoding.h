@@ -11,6 +11,6 @@ public:
 private:
 	static vector<uint8_t> InitAlphabet();
 	static int FindAlphabetIndex(const vector<uint8_t>& alphabet, uint8_t value);
-	static void MoveToFront(vector< uint8_t>& alphabet, int index, uint8_t value);
+	static void MoveToFront(vector< uint8_t>& alphabet, int index);
 };
 
