@@ -1,18 +1,18 @@
 #include "MoveToFrontEncoding.h"
 
-vector<uint8_t> MoveToFrontEncoding::Encode(vector<uint8_t> input)
+vector<uint8_t> MoveToFrontEncoding::Encode(const vector<uint8_t>& input)
 {
 	auto alphabet = InitAlphabet();
 
 	vector<uint8_t> output(input.size());
 
-	int size = input.size();
-	for (int inputIndex = 0; inputIndex < size; ++inputIndex)
+	const auto size = input.size();
+	for (size_t input_index = 0; input_index < size; ++input_index)
 	{
-		uint8_t current = input[inputIndex];
+		const auto current = input[input_index];
 
-		auto index = FindAlphabetIndex(alphabet, current);
-		output[inputIndex] = index;
+		const auto index = FindAlphabetIndex(alphabet, current);
+		output[input_index] = index;
 
 		MoveToFront(alphabet, index);
 	}
@@ -20,18 +20,18 @@ vector<uint8_t> MoveToFrontEncoding::Encode(vector<uint8_t> input)
 	return output;
 }
 
-vector<uint8_t> MoveToFrontEncoding::Decode(vector<uint8_t> input)
+vector<uint8_t> MoveToFrontEncoding::Decode(const vector<uint8_t>& input)
 {
 	auto alphabet = InitAlphabet();
 
 	vector<uint8_t> output(input.size());
 
-	int size = input.size();
-	for (int inputIndex = 0; inputIndex < size; ++inputIndex)
+	const auto size = input.size();
+	for (size_t input_index = 0; input_index < size; ++input_index)
 	{
-		uint8_t current = input[inputIndex];
+		const auto current = input[input_index];
 
-		output[inputIndex] = alphabet[current];
+		output[input_index] = alphabet[current];
 
 		MoveToFront(alphabet, current);
 	}
@@ -41,10 +41,10 @@ vector<uint8_t> MoveToFrontEncoding::Decode(vector<uint8_t> input)
 
 vector<uint8_t> MoveToFrontEncoding::InitAlphabet()
 {
-	const int kAlphabetSize = 256;
+	const size_t kAlphabetSize = 256;
 	vector<uint8_t> alphabet(kAlphabetSize);
 
-	for (int i = 0; i < kAlphabetSize; ++i)
+	for (size_t i = 0; i < kAlphabetSize; ++i)
 	{
 		alphabet[i] = i;
 	}
@@ -52,20 +52,22 @@ vector<uint8_t> MoveToFrontEncoding::InitAlphabet()
 	return alphabet;
 }
 
-int MoveToFrontEncoding::FindAlphabetIndex(const vector<uint8_t>& alphabet, uint8_t value)
+uint8_t MoveToFrontEncoding::FindAlphabetIndex(const vector<uint8_t>& alphabet, const uint8_t value)
 {
-	int size = alphabet.size();
-	for (int alphabetIndex = 0; alphabetIndex < size; ++alphabetIndex)
+	const auto size = alphabet.size();
+	for (size_t alphabet_index = 0; alphabet_index < size; ++alphabet_index)
 	{
-		if (alphabet[alphabetIndex] == value)
+		if (alphabet[alphabet_index] == value)
 		{
-			return alphabetIndex;
+			return alphabet_index;
 		}
 	}
+
+	throw std::runtime_error("Invalid alphabet state during Move to Front encoding");
 }
 
-void MoveToFrontEncoding::MoveToFront(vector<uint8_t>& alphabet, int index)
+void MoveToFrontEncoding::MoveToFront(vector<uint8_t>& alphabet, const size_t index)
 {
-	auto movedItemIterator = alphabet.begin() + index;
-	std::rotate(alphabet.begin(), movedItemIterator, movedItemIterator + 1);
+	const auto moved_item_iterator = alphabet.begin() + index;
+	std::rotate(alphabet.begin(), moved_item_iterator, moved_item_iterator + 1);
 }
