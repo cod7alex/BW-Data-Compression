@@ -1,7 +1,11 @@
 #pragma once
+
 #include "SuffixArray.h"
 #include <algorithm> // TODO remove me
 #include <deque>
+#include <cstdint>
+
+using std::uint8_t;
 
 class BWTransform {
 public:
