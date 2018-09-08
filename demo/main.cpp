@@ -56,6 +56,10 @@ int main()
 	}
 	cout << endl;
 
+	auto transformed_back_string = string(transformed_back.begin(), transformed_back.end());
+	auto are_equal = inputStr == transformed_back_string;
+	cout<< std::boolalpha << "Comparing to initial string: " << are_equal << endl << std::dec;
+
 	getchar();
 
 	return 0;
