@@ -1,4 +1,5 @@
 #include "SuffixArray.h"
+#include <functional>
 
 SuffixArray::SuffixArray(const vector<uint8_t>& input)
 	: length_(input.size())

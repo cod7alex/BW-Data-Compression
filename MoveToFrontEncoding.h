@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <algorithm>
-#include <stdexcept>
 #include <cstdint>
 
 using std::vector;

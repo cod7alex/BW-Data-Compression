@@ -7,13 +7,14 @@ using namespace std;
 
 int main()
 {
+	// string inputStr = "abbbaabbbbaccabbaaabc";
 	string inputStr = "ABRACADABRA!";
 	// string inputStr = "yabbadabbado";
 	vector<uint8_t> input (inputStr.begin(), inputStr.end());
 
 	auto encoded = MoveToFrontEncoding::Encode(input);
 
-	cout << "Encoding string 'ABRACADABRA!' using Move-to-Front encoding:" << endl;
+	cout << "Encoding string '" << inputStr << "' using Move-to-Front encoding:" << endl;
 	cout << std::hex;
 	for (auto i : encoded)
 	{
@@ -30,7 +31,7 @@ int main()
 	}
 	cout << endl;
 
-	cout << "Creating suffix array for string 'ABRACADABRA!'" << endl;
+	cout << "Creating suffix array for string '" << inputStr << "'" << endl;
 	auto suffix_array = SuffixArray(input);
 	for (int i = 0; i < suffix_array.Length(); i++)
 	{
@@ -38,7 +39,7 @@ int main()
 	}
 	cout << endl;
 
-	cout << "Applying Burrows-Wheeler transform to string 'ABRACADABRA!'" << endl;
+	cout << "Applying Burrows-Wheeler transform to string '" << inputStr << "'" << endl;
 	auto transformed = BWTransform::Transform(input);
 	cout << std::hex;
 	for (auto i : transformed)
@@ -48,8 +49,8 @@ int main()
 	cout << endl << std::dec;
 
 	cout << "Applying inverse Burrows-Wheeler transform" << endl;
-	auto transformedBack = BWTransform::InverseTransform(transformed);
-	for (auto i : transformedBack)
+	auto transformed_back = BWTransform::InverseTransform(transformed);
+	for (auto i : transformed_back)
 	{
 		cout << (char)i;
 	}

@@ -1,4 +1,6 @@
 #include "MoveToFrontEncoding.h"
+#include <algorithm>
+#include <stdexcept>
 
 vector<uint8_t> MoveToFrontEncoding::Encode(const vector<uint8_t>& input)
 {

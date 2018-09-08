@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <functional>
 #include <cstdint>
 
 using std::uint8_t;

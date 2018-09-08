@@ -1,4 +1,6 @@
 #include "BWTransform.h"
+#include <algorithm> // TODO remove me
+#include <deque>
 
 vector<uint8_t> BWTransform::Transform(const vector<uint8_t>& input)
 {
@@ -30,7 +32,7 @@ vector<uint8_t> BWTransform::Transform(const vector<uint8_t>& input)
 	return vector<uint8_t>(transform_result.begin(), transform_result.end());
 }
 
-vector<uint8_t> BWTransform::InverseTransform(vector<uint8_t> input)
+vector<uint8_t> BWTransform::InverseTransform(const vector<uint8_t> &input)
 {
 	auto first = 0;
 	for (size_t i = 0; i < 4; i++)
