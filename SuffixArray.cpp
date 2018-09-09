@@ -75,7 +75,7 @@ vector<int> SuffixArray::BuildSuffixArray(const vector<uint8_t>& input)
 	{
 		suffixes[i].index = i;
 		suffixes[i].rank = input[i];
-		suffixes[i].next_rank = i + 1 < input_size ? input[i + 1] : -1;
+		suffixes[i].next_rank = input[(i + 1) % input_size];
 	}
 
 	// sort by first two characters
@@ -112,10 +112,8 @@ vector<int> SuffixArray::BuildSuffixArray(const vector<uint8_t>& input)
 		// assign next rank to every suffix
 		for (size_t i = 0; i < input_size; i++)
 		{
-			const size_t next_index = suffixes[i].index + k / 2;
-			suffixes[i].next_rank = (next_index < input_size)
-				                        ? suffixes[start_index_to_suffix_mapping[next_index]].rank
-				                        : -1;
+			const size_t next_index = (suffixes[i].index + k / 2) % input_size;
+			suffixes[i].next_rank = suffixes[start_index_to_suffix_mapping[next_index]].rank;
 		}
 
 		// sort the suffixes according to first k characters

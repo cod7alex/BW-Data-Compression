@@ -7,8 +7,9 @@ using namespace std;
 
 int main()
 {
-	// string inputStr = "abbbaabbbbaccabbaaabc";
-	string inputStr = "ABRACADABRA!";
+	string inputStr = "abbbaabbbbaccabbaaabc";
+	// string inputStr = "cabc";
+	// string inputStr = "ABRACADABRA!";
 	// string inputStr = "yabbadabbado";
 	vector<uint8_t> input (inputStr.begin(), inputStr.end());
 
