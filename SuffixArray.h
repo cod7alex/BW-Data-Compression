@@ -4,7 +4,6 @@
 #include <cstdint>
 
 using std::uint8_t;
-
 using std::vector;
 
 class SuffixArray {

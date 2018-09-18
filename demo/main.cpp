@@ -3,16 +3,114 @@
 #include "../MoveToFrontEncoding.h"
 #include "../BWTransform.h"
 #include "../HuffmanCompression.h"
+#include "../CompressionClient.h"
 
 using namespace std;
 
-int main()
+void test();
+void compress(const std::string&, const std::string&);
+void decompress(const std::string& input_path, const std::string& output_path);
+
+int main(int argc, char* argv[])
 {
-	// string inputStr = "abbbaabbbbaccabbaaabc";
-	// string inputStr = "cabc";
-	// string inputStr = "ABRACADABRA!";
-	string inputStr = "yabbadabbado";
-	vector<uint8_t> input(inputStr.begin(), inputStr.end());
+	if (argc < 2)
+	{
+		cout << "You must specify mode parameter: '-t', '-c', '-d' and path to file for last two modes" << endl;
+		return 0;
+	}
+	const auto mode = std::string(argv[1]);
+	if (mode == "-t")
+		test();
+	else if (mode == "-c")
+		compress(argv[2], argv[3]);
+	else if (mode == "-d")
+		decompress(argv[2], argv[3]);
+
+	getchar();
+
+	return 0;
+}
+
+void compress(const std::string& input_path, const std::string& output_path)
+{
+	BWCompressionClient::CompressFile(input_path, output_path);
+
+	cout << "Compression done, check " << output_path << endl;
+}
+
+void decompress(const std::string& input_path, const std::string& output_path)
+{
+	BWCompressionClient::DecompressFile(input_path, output_path);
+
+	cout << "Decompression done, check " << output_path << endl;
+}
+
+void test()
+{
+	// string inputStr = "banananb";
+	// string inputStr = "ABRACADABRA!!";
+	// string inputStr = "Implement a redundancy detector a";
+	string inputStr = "Everyone wants to live in (a) Princeton"
+		"Urban planner uncovers yearning for sense of place - and"
+		"birds"
+		""
+		"By Kathleen McGinn Spring"
+		"Princeton Packet Business Editor"
+		"Monday, March 22, 1999"
+		""
+		"Anton Nelessen knows exactly where citizens of the 21st"
+		"century want to live, because tens of thousands of them in"
+		"Durban, South Africa, Orlando, Milwaukee, Atlanta, Metuchen"
+		"and hundreds of other spots around the globe have told him."
+		"And where they want to live is .....downtown Princeton."
+		""
+		"Well, perhaps not in Princeton per se, but in a place that"
+		"By Kathleen McGinn Spring"
+		"Princeton Packet Business Editor"
+		"Monday, March 22, 1999"
+		""
+		"Anton Nelessen knows exactly where citizens of the 21st"
+		"century want to live, because tens of thousands of them in"
+		"Durban, South Africa, Orlando, Milwaukee, Atlanta, Metuchen"
+		"and hundreds of other spots around the globe have told him."
+		"And where they want to live is .....downtown Princeton."
+		""
+		"Well, perhaps not in Princeton per se, but in a place that"
+		"By Kathleen McGinn Spring"
+		"Princeton Packet Business Editor"
+		"Monday, March 22, 1999"
+		""
+		"Anton Nelessen knows exactly where citizens of the 21st"
+		"century want to live, because tens of thousands of them in"
+		"Durban, South Africa, Orlando, Milwaukee, Atlanta, Metuchen"
+		"and hundreds of other spots around the globe have told him."
+		"And where they want to live is .....downtown Princeton."
+		""
+		"Well, perhaps not in Princeton per se, but in a place that"
+		"By Kathleen McGinn Spring"
+		"Princeton Packet Business Editor"
+		"Monday, March 22, 1999"
+		""
+		"Anton Nelessen knows exactly where citizens of the 21st"
+		"century want to live, because tens of thousands of them in"
+		"Durban, South Africa, Orlando, Milwaukee, Atlanta, Metuchen"
+		"and hundreds of other spots around the globe have told him."
+		"And where they want to live is .....downtown Princeton."
+		""
+		"Well, perhaps not in Princeton per se, but in a place that"
+		"By Kathleen McGinn Spring"
+		"Princeton Packet Business Editor"
+		"Monday, March 22, 1999"
+		""
+		"Anton Nelessen knows exactly where citizens of the 21st"
+		"century want to live, because tens of thousands of them in"
+		"Durban, South Africa, Orlando, Milwaukee, Atlanta, Metuchen"
+		"and hundreds of other spots around the globe have told him."
+		"And where they want to live is .....downtown Princeton."
+		""
+		"Well, perhaps not in Princeton per se, but in a place that";
+
+	const vector<uint8_t> input(inputStr.begin(), inputStr.end());
 
 	auto encoded = MoveToFrontEncoding::Encode(input);
 
@@ -58,9 +156,9 @@ int main()
 	}
 	cout << endl;
 
-	auto transformed_back_string = string(transformed_back.begin(), transformed_back.end());
-	auto are_equal = inputStr == transformed_back_string;
-	cout<< std::boolalpha << "Comparing to initial string: " << are_equal << endl << std::dec;
+	const auto transformed_back_string = string(transformed_back.begin(), transformed_back.end());
+	const auto are_equal = inputStr == transformed_back_string;
+	cout << std::boolalpha << "Comparing to initial string: " << are_equal << endl << std::dec;
 
 	cout << "Applying Huffman compression to string '" << inputStr << "'" << endl;
 	auto compressed = HuffmanCompression::Compress(input);
@@ -80,8 +178,8 @@ int main()
 
 	cout << "Applying full Burrows-Wheeler compression to string '" << inputStr << "'" << endl;
 	cout << "'" << inputStr << "'" << " is " << inputStr.size() * std::numeric_limits<unsigned char>::digits << " bits" << endl;
-	auto bw_transformed = BWTransform::Transform(input);
-	auto move_to_front_encoded = MoveToFrontEncoding::Encode(bw_transformed);
+	const auto bw_transformed = BWTransform::Transform(input);
+	const auto move_to_front_encoded = MoveToFrontEncoding::Encode(bw_transformed);
 	auto huffman_compressed = HuffmanCompression::Compress(move_to_front_encoded);
 
 	cout << "Output with size of " << huffman_compressed.size() << " bits" << endl;
@@ -92,8 +190,8 @@ int main()
 	cout << endl;
 
 	cout << "Inverting Burrows-Wheeler compression" << endl;
-	auto huffman_decompressed = HuffmanCompression::Decompress(huffman_compressed);
-	auto move_to_front_decoded = MoveToFrontEncoding::Decode(huffman_decompressed);
+	const auto huffman_decompressed = HuffmanCompression::Decompress(huffman_compressed);
+	const auto move_to_front_decoded = MoveToFrontEncoding::Decode(huffman_decompressed);
 	auto bw_inverse_transformed = BWTransform::InverseTransform(move_to_front_decoded);
 
 	for (auto i : bw_inverse_transformed)
@@ -101,8 +199,4 @@ int main()
 		cout << (char)i;
 	}
 	cout << endl;
-
-	getchar();
-
-	return 0;
 }
