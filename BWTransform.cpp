@@ -54,7 +54,7 @@ vector<uint8_t> BWTransform::InverseTransform(const vector<uint8_t> &input)
 	}
 
 	// TODO Radix Sort me
-	std::sort(first_column.begin(), first_column.end(),
+	std::stable_sort(first_column.begin(), first_column.end(),
 	          [](const std::pair<int, size_t>& left, const std::pair<int, size_t>& right) -> bool
 	          {
 		          return left.first < right.first;
