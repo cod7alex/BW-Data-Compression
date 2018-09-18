@@ -18,7 +18,8 @@ vector<uint8_t> BWTransform::Transform(const vector<uint8_t>& input)
 			// writing in inverse order to get correct representation in result
 			for (size_t j = 0; j < 4; j++)
 			{
-				transform_result.push_front(i >> 8 * j);
+				const auto byte = (i >> 8 * j) & 0xFF;
+				transform_result.push_front(byte);
 			}
 
 			transform_result.push_back(input[input.size() - 1]);
@@ -37,7 +38,7 @@ vector<uint8_t> BWTransform::InverseTransform(const vector<uint8_t> &input)
 	auto first = 0;
 	for (size_t i = 0; i < 4; i++)
 	{
-		first |= input[i] >> (3 - i) * 8;
+		first |= input[i] << (3 - i) * 8;
 	}
 
 	// 'first' value takes 4 bytes
