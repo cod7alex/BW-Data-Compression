@@ -1,6 +1,5 @@
 #include "SuffixArray.h"
-#include <functional>
-#include <algorithm>
+#include "utils/Sorting.h"
 
 SuffixArray::SuffixArray(const vector<uint8_t>& input)
 	: length_(input.size())
@@ -25,65 +24,23 @@ struct Suffix
 	int next_rank;
 };
 
-void RadixPass(const vector<Suffix>& suffixes, int max_rank, vector<Suffix>& result,
-               const std::function<int(const Suffix& suffix)>& get_value)
-{
-	const size_t size = max_rank + 1;
-	vector<int> occurence_count(size, 0);
-
-	for (auto suffix : suffixes)
-	{
-		const auto value = get_value(suffix);
-		occurence_count[value]++;
-	}
-
-	// switch from counts to positions in output
-	for (size_t i = 1; i < size; i++)
-	{
-		occurence_count[i] += occurence_count[i - 1];
-	}
-
-	for (int i = suffixes.size() - 1; i >= 0; i--)
-	{
-		const auto value = get_value(suffixes[i]);
-		const auto new_index = occurence_count[value];
-		occurence_count[value]--;
-		result[new_index - 1] = suffixes[i];
-	}
-}
-
-void RadixSort(vector<Suffix>& suffixes, int max_rank)
-{
-	vector<Suffix> temp(suffixes.size());
-
-	// radix sort in two passes - first by next_rank and then by rank
-	RadixPass(suffixes, max_rank, temp, [](const Suffix& suffix) -> int
-	{
-		return suffix.next_rank;
-	});
-
-	RadixPass(temp, max_rank, suffixes, [](const Suffix& suffix) -> int
-	{
-		return suffix.rank;
-	});
-}
+void RadixSort(vector<Suffix>& suffixes, int max_rank);
 
 vector<int> SuffixArray::BuildSuffixArray(const vector<uint8_t>& input)
 {
 	const auto input_size = input.size();
 
 	vector<Suffix> suffixes(input.size());
-	int max_rank = 0;
+
 	for (size_t i = 0; i < input_size; i++)
 	{
 		suffixes[i].index = i;
 		suffixes[i].rank = input[i];
 		suffixes[i].next_rank = input[(i + 1) % input_size];
-		max_rank = std::max(max_rank, std::max(suffixes[i].rank, suffixes[i].next_rank));
 	}
 
 	// sort by first two characters
-	RadixSort(suffixes, max_rank);
+	RadixSort(suffixes, 255);
 
 	vector<int> start_index_to_suffix_mapping(input_size);
 
@@ -135,4 +92,23 @@ vector<int> SuffixArray::BuildSuffixArray(const vector<uint8_t>& input)
 		suffix_array[i] = suffixes[i].index;
 
 	return suffix_array;
+}
+
+void RadixSort(vector<Suffix>& suffixes, const int max_rank)
+{
+	vector<Suffix> temp(suffixes.size());
+
+	// radix sort in two passes - first by next_rank and then by rank
+	const auto get_next_rank = [](const Suffix& suffix) -> int
+	{
+		return suffix.next_rank;
+	};
+
+	const auto get_rank = [](const Suffix& suffix) -> int
+	{
+		return suffix.rank;
+	};
+
+	sorting::CountingSort<Suffix>(suffixes, max_rank, get_next_rank, temp);
+	sorting::CountingSort<Suffix>(temp, max_rank, get_rank, suffixes);
 }

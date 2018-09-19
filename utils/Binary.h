@@ -19,7 +19,7 @@ namespace binary
 		unsigned char byte = buffer.at(0);
 		size_t bit_count = 0;
 		size_t byte_count = 0;
-		for (auto i = 0; i < data_size; i++)
+		for (unsigned int i = 0; i < data_size; i++)
 		{
 			const auto bit = byte >> (8 - bit_count - 1);
 			if ((bit & 1) == 1)

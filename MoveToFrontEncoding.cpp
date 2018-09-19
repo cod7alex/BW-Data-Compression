@@ -1,6 +1,7 @@
-#include "MoveToFrontEncoding.h"
 #include <algorithm>
 #include <stdexcept>
+
+#include "MoveToFrontEncoding.h"
 
 vector<uint8_t> MoveToFrontEncoding::Encode(const vector<uint8_t>& input)
 {
@@ -48,7 +49,7 @@ vector<uint8_t> MoveToFrontEncoding::InitAlphabet()
 
 	for (size_t i = 0; i < kAlphabetSize; ++i)
 	{
-		alphabet[i] = i;
+		alphabet[i] = static_cast<uint8_t>(i);
 	}
 
 	return alphabet;
@@ -61,7 +62,7 @@ uint8_t MoveToFrontEncoding::FindAlphabetIndex(const vector<uint8_t>& alphabet, 
 	{
 		if (alphabet[alphabet_index] == value)
 		{
-			return alphabet_index;
+			return static_cast<uint8_t>(alphabet_index);
 		}
 	}
 
