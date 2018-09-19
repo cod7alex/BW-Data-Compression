@@ -13,6 +13,6 @@ MoveToFrontEncoding.h SuffixArray.h BWTransform.h HuffmanCompression.h BurrowsWh
 
 add_library(client SHARED CompressionClient.cpp CompressionClient.h utils/Binary.h)
 
-add_executable(demo demo/main.cpp)       
+add_executable(main main/main.cpp)       
 target_link_libraries(client libbwc)
-target_link_libraries(demo client libbwc)
+target_link_libraries(main client libbwc)
