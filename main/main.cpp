@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <limits>
+
 #include "../MoveToFrontEncoding.h"
 #include "../BWTransform.h"
 #include "../HuffmanCompression.h"
